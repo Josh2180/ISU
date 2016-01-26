@@ -254,9 +254,9 @@
                           <Component id="lblgold" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="jButton3" min="-2" pref="70" max="-2" attributes="0"/>
+                          <Component id="btnbuy" min="-2" pref="70" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
-                          <Component id="jButton4" min="-2" pref="70" max="-2" attributes="0"/>
+                          <Component id="btnsell" min="-2" pref="70" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -275,8 +275,8 @@
                   <Component id="jScrollPane2" min="-2" pref="151" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jButton3" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jButton4" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnbuy" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnsell" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="201" max="-2" attributes="0"/>
               </Group>
@@ -311,12 +311,12 @@
             <Property name="text" type="java.lang.String" value="SHOP"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton3">
+        <Component class="javax.swing.JButton" name="btnbuy">
           <Properties>
             <Property name="text" type="java.lang.String" value="Buy"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton4">
+        <Component class="javax.swing.JButton" name="btnsell">
           <Properties>
             <Property name="text" type="java.lang.String" value="Sell"/>
           </Properties>
@@ -347,6 +347,9 @@
         <Component class="javax.swing.JLabel" name="lblenemy">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
+            <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+              <Color id="Default Cursor"/>
+            </Property>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">

@@ -1,4 +1,5 @@
 
+import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
@@ -6,6 +7,7 @@ import java.util.logging.Logger;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
@@ -19,12 +21,17 @@ public class GUI extends javax.swing.JFrame {
     Player p;
     Enemy e;
     Clip pagoda, hit, danger, levelup;
+    HashMap<String,Item> item;
+    DefaultListModel list;
     int turn = 0;
     int floor = 0, kills = -1;
     int choice;
     int levelcheck, attackcheck, defensecheck, hpcheck;
 
     public GUI() {
+        String nameplayer;
+        nameplayer = JOptionPane.showInputDialog("Who are you?");
+        p = new Player(nameplayer, 1, 0);
         this.setUndecorated(true);
         initComponents();
         DefaultCaret caret = (DefaultCaret) txtevent.getCaret();
@@ -53,7 +60,8 @@ public class GUI extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         btnattack.setEnabled(false);
-        p = new Player("Seyi", 1, 0);
+        item = new HashMap<String, Item>();
+
         hpcheck = p.getPlayerCurrentHealth();
         levelcheck = p.getPlayerLevel();
         attackcheck = p.getPlayerAttack();
@@ -70,6 +78,8 @@ public class GUI extends javax.swing.JFrame {
         timer1 = new Timer();
         timer2 = new Timer();
         timer3 = new Timer();
+        list = new DefaultListModel();
+        lstshop.setModel(list);
         txtupdate = new TimerTask() {
             @Override
             public void run() {
@@ -126,7 +136,7 @@ public class GUI extends javax.swing.JFrame {
                 if (p.getPlayerLevel() > levelcheck) {
                     levelup.setFramePosition(0);
                     levelup.start();
-                    
+
                     txtevent.append("\n" + p.getPlayerName() + " has leveled up!\n");
                     txtevent.append("Health has gone up " + ((p.getPlayerHealth()) - ((int) ((((p.getPlayerLevel() - 1) - 1) * ((p.getPlayerLevel()) - 1)) + 20))));
                     txtevent.append("\nAttack has gone up " + (p.getPlayerAttack() - attackcheck));
@@ -159,10 +169,10 @@ public class GUI extends javax.swing.JFrame {
         hpbar = new javax.swing.JProgressBar();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        lstshop = new javax.swing.JList<>();
+        lstshop = new javax.swing.JList<String>();
         jLabel1 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        btnbuy = new javax.swing.JButton();
+        btnsell = new javax.swing.JButton();
         lblgold = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         lblenemy = new javax.swing.JLabel();
@@ -249,9 +259,9 @@ public class GUI extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("SHOP");
 
-        jButton3.setText("Buy");
+        btnbuy.setText("Buy");
 
-        jButton4.setText("Sell");
+        btnsell.setText("Sell");
 
         lblgold.setIcon(new javax.swing.ImageIcon(getClass().getResource("/coins.png"))); // NOI18N
         lblgold.setText("$0.00");
@@ -269,9 +279,9 @@ public class GUI extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblgold))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnbuy, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnsell, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -285,8 +295,8 @@ public class GUI extends javax.swing.JFrame {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4))
+                    .addComponent(btnbuy)
+                    .addComponent(btnsell))
                 .addGap(201, 201, 201))
         );
 
@@ -294,6 +304,7 @@ public class GUI extends javax.swing.JFrame {
         jPanel3.setLayout(null);
 
         lblenemy.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblenemy.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jPanel3.add(lblenemy);
         lblenemy.setBounds(0, 0, 440, 440);
         jPanel3.add(background);
@@ -511,7 +522,7 @@ public class GUI extends javax.swing.JFrame {
             hit.start();
             hit.setFramePosition(0);
             int temp;
-            temp = ((int) ((Math.random() * (p.getPlayerAttack() - (p.getPlayerAttack() * 0.75)) + p.getPlayerAttack() * 0.75) + 0.50 )) - e.getEnemyDefense();
+            temp = ((int) ((Math.random() * (p.getPlayerAttack() - (p.getPlayerAttack() * 0.75)) + p.getPlayerAttack() * 0.75) + 0.50)) - e.getEnemyDefense();
             if (temp < 1) {
                 temp = 1;
             }
@@ -555,13 +566,13 @@ public class GUI extends javax.swing.JFrame {
     public void getEnemy() {
         int id = 0;
         if (floor <= 10) {
-            id = (int) ((Math.random() * 1 + 1)+0.49);
+            id = (int) ((Math.random() * 1 + 1) + 0.49);
         }
         if (floor > 10 && floor < 21) {
-            id = (int) ((Math.random() * (5 - 3) + 3)+0.49);
+            id = (int) ((Math.random() * (5 - 3) + 3) + 0.49);
         }
         if (floor > 20 && floor < 31) {
-            id = (int) ((Math.random() * (8 - 6)  + 6)+0.49);
+            id = (int) ((Math.random() * (8 - 6) + 6) + 0.49);
         }
         if (id == 1) {
             e = new Slime();
@@ -654,7 +665,7 @@ public class GUI extends javax.swing.JFrame {
                         }
                         hit.start();
                         hit.setFramePosition(0);
-                        int damage = ((int) ((Math.random() * (e.getEnemyAttack() - (e.getEnemyAttack() * 0.75)) + e.getEnemyAttack() * 0.75) + 0.50 )) - p.getPlayerDefense();
+                        int damage = ((int) ((Math.random() * (e.getEnemyAttack() - (e.getEnemyAttack() * 0.75)) + e.getEnemyAttack() * 0.75) + 0.50)) - p.getPlayerDefense();
                         if (damage < 1) {
                             damage = 1;
                         }
@@ -725,13 +736,13 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel background;
     private javax.swing.JButton btnattack;
     private javax.swing.JButton btnbattle;
+    private javax.swing.JButton btnbuy;
     private javax.swing.JButton btnitem;
+    private javax.swing.JButton btnsell;
     private javax.swing.JMenuItem devcons;
     private javax.swing.JProgressBar enemybar;
     private javax.swing.JProgressBar expbar;
     private javax.swing.JProgressBar hpbar;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
