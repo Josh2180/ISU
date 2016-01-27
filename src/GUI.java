@@ -1,5 +1,9 @@
 
+import java.awt.PopupMenu;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
@@ -20,9 +24,10 @@ public class GUI extends javax.swing.JFrame {
     TimerTask battleTimer, battleCheck;
     Player p;
     Enemy e;
+    ArrayList<Item> i;
     Clip pagoda, hit, danger, levelup;
-    HashMap<String,Item> item;
-    DefaultListModel list;
+
+    DefaultListModel model;
     int turn = 0;
     int floor = 0, kills = -1;
     int choice;
@@ -59,9 +64,8 @@ public class GUI extends javax.swing.JFrame {
         pagoda.loop((int) Math.pow(1000, 1000));
         this.setLocationRelativeTo(null);
         this.setResizable(false);
+        i = new ArrayList<Item>();
         btnattack.setEnabled(false);
-        item = new HashMap<String, Item>();
-
         hpcheck = p.getPlayerCurrentHealth();
         levelcheck = p.getPlayerLevel();
         attackcheck = p.getPlayerAttack();
@@ -78,8 +82,14 @@ public class GUI extends javax.swing.JFrame {
         timer1 = new Timer();
         timer2 = new Timer();
         timer3 = new Timer();
-        list = new DefaultListModel();
-        lstshop.setModel(list);
+        model = new DefaultListModel();
+        i.add(new Potion("Lesser Potion", 10, 100, 50));
+        i.add(new Sword("Bronze Sword", 3, 0, 1, 100));
+        Collections.sort(i);
+        for (int x = 0; x < i.size(); x++) {
+            model.addElement(i.get(x).getItemName());
+        }
+        lstshop.setModel(model);
         txtupdate = new TimerTask() {
             @Override
             public void run() {
@@ -146,6 +156,7 @@ public class GUI extends javax.swing.JFrame {
                     attackcheck = p.getPlayerAttack();
                     defensecheck = p.getPlayerDefense();
                 }
+                Collections.sort(i);
             }
         };
         if (p.getPlayerCurrentHealth() >= 1) {
@@ -260,6 +271,11 @@ public class GUI extends javax.swing.JFrame {
         jLabel1.setText("SHOP");
 
         btnbuy.setText("Buy");
+        btnbuy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnbuyActionPerformed(evt);
+            }
+        });
 
         btnsell.setText("Sell");
 
@@ -360,6 +376,11 @@ public class GUI extends javax.swing.JFrame {
         });
 
         btnitem.setText("Item");
+        btnitem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnitemActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -549,6 +570,7 @@ public class GUI extends javax.swing.JFrame {
 
     private void devconsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_devconsActionPerformed
         String cons = JOptionPane.showInputDialog(this, "Developer Console");
+       try{
         if (cons.equals("maxhealth")) {
             p.setCurrentPlayerHealth();
         }
@@ -561,7 +583,26 @@ public class GUI extends javax.swing.JFrame {
         if (cons.equals("buffx100")) {
             p.addPlayerExperience(100);
         }
+       } catch(Exception e){}
     }//GEN-LAST:event_devconsActionPerformed
+
+    private void btnbuyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbuyActionPerformed
+        int loc = lstshop.getSelectedIndex();
+        i.get(loc).removeAmount();
+        if (p.getPlayerGold() > i.get(loc).getCost()) {
+            p.addPlayerGold(-1 * (i.get(loc).getCost()));
+        }
+    }//GEN-LAST:event_btnbuyActionPerformed
+
+    private void btnitemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnitemActionPerformed
+        String result = "";
+        for(int x=0; x < i.size(); x++){
+            result += i.get(x).getItemName() + "/n";
+        }
+        
+        result += "Type the name of the item you want to use";
+        JOptionPane.showInputDialog(this, result);
+    }//GEN-LAST:event_btnitemActionPerformed
 
     public void getEnemy() {
         int id = 0;

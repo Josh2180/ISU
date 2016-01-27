@@ -1,4 +1,7 @@
 
+import java.util.ArrayList;
+
+
 public class Player {
 
     String name;//player's name
@@ -9,6 +12,7 @@ public class Player {
     int curhealth = maxhealth;
     int attack = 1;//player starts with one attack
     int defense = 1;//player starts with one defense
+    ArrayList<Item> i;
 
     public Player(String n, int l, int e) {
         name = n;
@@ -92,6 +96,14 @@ public class Player {
     
     public void setCurrentPlayerHealth(){
         curhealth = maxhealth;
+    }
+    
+    public void addItem(Item item){
+        i.add(item);
+    }
+    
+    public Item getItem(){
+        
     }
 
 }

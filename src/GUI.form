@@ -315,6 +315,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Buy"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnbuyActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnsell">
           <Properties>
@@ -491,6 +494,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Item"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnitemActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
